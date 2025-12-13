@@ -13,4 +13,10 @@ return {
       go = { "gofmt" },
     },
   },
+  {
+    "catppuccin/nvim",
+    opts = {
+      transparent_background = true,
+    },
+  },
 }
