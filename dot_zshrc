@@ -1,0 +1,17 @@
+source /Users/andrewadriance/.config/zsh/config.zsh
+
+# Created by `pipx` on 2024-07-21 20:33:01
+export PATH="$PATH:/Users/andrewadriance/.local/bin"
+if [ -f "/Users/andrewadriance/.config/fabric/fabric-bootstrap.inc" ]; then . "/Users/andrewadriance/.config/fabric/fabric-bootstrap.inc"; fi
+export PATH="/opt/homebrew/opt/mysql@8.4/bin:$PATH"
+eval "$(direnv hook zsh)"
+
+# bun completions
+[ -s "/Users/andrewadriance/.bun/_bun" ] && source "/Users/andrewadriance/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
+
+export EDITOR="nvim"
