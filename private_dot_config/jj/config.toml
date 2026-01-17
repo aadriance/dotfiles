@@ -4,7 +4,3 @@ email = "me@primaryartemis.com"
 
 [ui]
 diff-formatter = ["difft", "--color=always", "$left", "$right"]
-diff-formatter = "difft"
-
-[merge-tools.difft]
-diff-args = ["--color=always", "$left", "$right"]
