@@ -13,7 +13,6 @@
 
   antigen bundle zsh-users/zsh-syntax-highlighting
   antigen bundle Aloxaf/fzf-tab
-  antigen bundle ~/code/briefcase-zsh/ --no-local-clone
   # Tell Antigen that you're done.
   antigen apply
 

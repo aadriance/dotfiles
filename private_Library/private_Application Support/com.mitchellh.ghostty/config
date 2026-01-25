@@ -5,3 +5,11 @@ background-blur = true
 macos-non-native-fullscreen = true
 shell-integration-features = ssh-terminfo
 shell-integration-features = ssh-env
+
+keybind = ctrl+x=close_surface
+keybind = ctrl+h=goto_split:left
+keybind = ctrl+l=goto_split:right
+keybind = ctrl+j=goto_split:down
+keybind = ctrl+k=goto_split:up
+
+keybind = global:cmd+,=toggle_quick_terminal

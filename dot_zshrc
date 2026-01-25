@@ -19,3 +19,6 @@ export TERM="xterm-256color"
 
 . "$HOME/.cargo/env"
 export PATH="$HOME/.cargo/bin:$PATH"
+
+alias ash="autossh -M 0 -q"
+alias mvim="NVIM_APPNAME=nvim-mini nvim"

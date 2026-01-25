@@ -37,6 +37,8 @@ packages:
     - 'yt-dlp'
     - 'zoxide'
     - 'vscode-langservers-extracted'
+    - 'autossh'
+    - 'zmx'
     casks:
     - 'google-chrome'
     - 'caffeine'
