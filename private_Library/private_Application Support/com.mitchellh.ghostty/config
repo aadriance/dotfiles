@@ -2,7 +2,6 @@ font-family=ZedMono Nerd Font Mono
 theme = Catppuccin Mocha
 background-opacity = 0.9
 background-blur = true
-macos-non-native-fullscreen = true
 shell-integration-features = ssh-terminfo
 shell-integration-features = ssh-env
 
