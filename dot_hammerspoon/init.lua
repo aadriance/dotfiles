@@ -1,11 +1,5 @@
 PaperWM = hs.loadSpoon("PaperWM")
 PaperWM:bindHotkeys({
-	-- switch to a new focused window in tiled grid
-	focus_left = { { "ctrl", "alt" }, "h" },
-	focus_right = { { "ctrl", "alt" }, "l" },
-	focus_up = { { "ctrl", "alt" }, "k" },
-	focus_down = { { "ctrl", "alt" }, "j" },
-
 	-- move windows around in tiled grid
 	swap_left = { { "ctrl", "alt" }, "left" },
 	swap_right = { { "ctrl", "alt" }, "right" },
@@ -23,7 +17,6 @@ PaperWM:bindHotkeys({
 
 	-- move the focused window into / out of the tiling layer
 	toggle_floating = { { "alt", "ctrl" }, "m" },
-	-- raise all floating windows on top of tiled windows
 	focus_floating = { { "alt", "ctrl", "shift" }, "f" },
 
 	-- focus the first / second / etc window in the current space
@@ -36,19 +29,6 @@ PaperWM:bindHotkeys({
 	focus_window_7 = { { "cmd", "shift" }, "7" },
 	focus_window_8 = { { "cmd", "shift" }, "8" },
 	focus_window_9 = { { "cmd", "shift" }, "9" },
-
-	-- switch to a new Mission Control space
-	switch_space_l = { { "alt", "ctrl" }, "," },
-	switch_space_r = { { "alt", "ctrl" }, "." },
-	switch_space_1 = { { "alt", "ctrl" }, "1" },
-	switch_space_2 = { { "alt", "ctrl" }, "2" },
-	switch_space_3 = { { "alt", "ctrl" }, "3" },
-	switch_space_4 = { { "alt", "ctrl" }, "4" },
-	switch_space_5 = { { "alt", "ctrl" }, "5" },
-	switch_space_6 = { { "alt", "ctrl" }, "6" },
-	switch_space_7 = { { "alt", "ctrl" }, "7" },
-	switch_space_8 = { { "alt", "ctrl" }, "8" },
-	switch_space_9 = { { "alt", "ctrl" }, "9" },
 
 	-- move focused window to a new space and tile
 	move_window_1 = { { "alt", "ctrl", "shift" }, "1" },
@@ -67,3 +47,35 @@ PaperWM.window_filter:rejectApp("Ghostty")
 PaperWM.window_ratios = { 1 / 4, 1 / 2, 3 / 4 }
 
 PaperWM:start()
+
+-- Focus + auto-center: ctrl+alt+hjkl
+local Direction = PaperWM.windows.Direction
+local dirKeys = { h = Direction.LEFT, l = Direction.RIGHT, k = Direction.UP, j = Direction.DOWN }
+for key, dir in pairs(dirKeys) do
+	hs.hotkey.bind({ "ctrl", "alt" }, key, function()
+		PaperWM.windows.focusWindow(dir)
+		PaperWM.windows.centerWindow()
+	end)
+end
+
+-- Space switching with delayed refocus
+local function switchAndRefocus(fn, ...)
+	local args = table.pack(...)
+	fn(table.unpack(args))
+	hs.timer.doAfter(0.3, function()
+		local win = hs.window.focusedWindow()
+		if win then win:focus() end
+	end)
+end
+
+for i = 1, 9 do
+	hs.hotkey.bind({ "alt", "ctrl" }, tostring(i), function()
+		switchAndRefocus(PaperWM.space.switchToSpace, i)
+	end)
+end
+hs.hotkey.bind({ "alt", "ctrl" }, ",", function()
+	switchAndRefocus(PaperWM.space.incrementSpace, Direction.LEFT)
+end)
+hs.hotkey.bind({ "alt", "ctrl" }, ".", function()
+	switchAndRefocus(PaperWM.space.incrementSpace, Direction.RIGHT)
+end)
