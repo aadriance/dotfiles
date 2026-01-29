@@ -15,7 +15,6 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
 
 export EDITOR="nvim"
-export TERM="xterm-256color"
 
 . "$HOME/.cargo/env"
 export PATH="$HOME/.cargo/bin:$PATH"
