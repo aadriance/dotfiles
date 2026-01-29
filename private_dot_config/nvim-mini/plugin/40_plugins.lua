@@ -38,47 +38,55 @@ local now_if_args = _G.Config.now_if_args
 --   with `:TSInstall <language>`. Be sure to have necessary system dependencies
 --   (see MiniMax README section for software requirements).
 now_if_args(function()
-  add({
-    source = 'nvim-treesitter/nvim-treesitter',
-    -- Update tree-sitter parser after plugin is updated
-    hooks = { post_checkout = function() vim.cmd('TSUpdate') end },
-  })
-  add({
-    source = 'nvim-treesitter/nvim-treesitter-textobjects',
-    -- Use `main` branch since `master` branch is frozen, yet still default
-    -- It is needed for compatibility with 'nvim-treesitter' `main` branch
-    checkout = 'main',
-  })
+	add({
+		source = "nvim-treesitter/nvim-treesitter",
+		-- Update tree-sitter parser after plugin is updated
+		hooks = {
+			post_checkout = function()
+				vim.cmd("TSUpdate")
+			end,
+		},
+	})
+	add({
+		source = "nvim-treesitter/nvim-treesitter-textobjects",
+		-- Use `main` branch since `master` branch is frozen, yet still default
+		-- It is needed for compatibility with 'nvim-treesitter' `main` branch
+		checkout = "main",
+	})
 
-  -- Define languages which will have parsers installed and auto enabled
-  -- After changing this, restart Neovim once to install necessary parsers. Wait
-  -- for the installation to finish before opening a file for added language(s).
-  local languages = {
-    -- These are already pre-installed with Neovim. Used as an example.
-    'lua',
-    'vimdoc',
-    'markdown',
-    -- Add here more languages with which you want to use tree-sitter
-    -- To see available languages:
-    -- - Execute `:=require('nvim-treesitter').get_available()`
-    -- - Visit 'SUPPORTED_LANGUAGES.md' file at
-    --   https://github.com/nvim-treesitter/nvim-treesitter/blob/main
-  }
-  local isnt_installed = function(lang)
-    return #vim.api.nvim_get_runtime_file('parser/' .. lang .. '.*', false) == 0
-  end
-  local to_install = vim.tbl_filter(isnt_installed, languages)
-  if #to_install > 0 then require('nvim-treesitter').install(to_install) end
+	-- Define languages which will have parsers installed and auto enabled
+	-- After changing this, restart Neovim once to install necessary parsers. Wait
+	-- for the installation to finish before opening a file for added language(s).
+	local languages = {
+		-- These are already pre-installed with Neovim. Used as an example.
+		"lua",
+		"vimdoc",
+		"markdown",
+		-- Add here more languages with which you want to use tree-sitter
+		-- To see available languages:
+		-- - Execute `:=require('nvim-treesitter').get_available()`
+		-- - Visit 'SUPPORTED_LANGUAGES.md' file at
+		--   https://github.com/nvim-treesitter/nvim-treesitter/blob/main
+	}
+	local isnt_installed = function(lang)
+		return #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".*", false) == 0
+	end
+	local to_install = vim.tbl_filter(isnt_installed, languages)
+	if #to_install > 0 then
+		require("nvim-treesitter").install(to_install)
+	end
 
-  -- Enable tree-sitter after opening a file for a target language
-  local filetypes = {}
-  for _, lang in ipairs(languages) do
-    for _, ft in ipairs(vim.treesitter.language.get_filetypes(lang)) do
-      table.insert(filetypes, ft)
-    end
-  end
-  local ts_start = function(ev) vim.treesitter.start(ev.buf) end
-  _G.Config.new_autocmd('FileType', filetypes, ts_start, 'Start tree-sitter')
+	-- Enable tree-sitter after opening a file for a target language
+	local filetypes = {}
+	for _, lang in ipairs(languages) do
+		for _, ft in ipairs(vim.treesitter.language.get_filetypes(lang)) do
+			table.insert(filetypes, ft)
+		end
+	end
+	local ts_start = function(ev)
+		vim.treesitter.start(ev.buf)
+	end
+	_G.Config.new_autocmd("FileType", filetypes, ts_start, "Start tree-sitter")
 end)
 
 -- Language servers ===========================================================
@@ -97,10 +105,10 @@ end)
 --
 -- Add it now if file (and not 'mini.starter') is shown after startup.
 now_if_args(function()
-  add('neovim/nvim-lspconfig')
+	add("neovim/nvim-lspconfig")
 
-  -- Use `:h vim.lsp.config()` or 'after/lsp/' directory to configure servers.
-  -- LSP enabling is handled automatically by mason-lspconfig below.
+	-- Use `:h vim.lsp.config()` or 'after/lsp/' directory to configure servers.
+	-- LSP enabling is handled automatically by mason-lspconfig below.
 end)
 
 -- Formatting =================================================================
@@ -112,25 +120,30 @@ end)
 -- The 'stevearc/conform.nvim' plugin is a good and maintained solution for easier
 -- formatting setup.
 later(function()
-  add('stevearc/conform.nvim')
+	add("stevearc/conform.nvim")
 
-  -- See also:
-  -- - `:h Conform`
-  -- - `:h conform-options`
-  -- - `:h conform-formatters`
-  require('conform').setup({
-    default_format_opts = {
-      -- Allow formatting from LSP server if no dedicated formatter is available
-      lsp_format = 'fallback',
-    },
-    -- Map of filetype to formatters
-    -- Make sure that necessary CLI tool is available
-    formatters_by_ft = {
-      lua = { 'stylua' },
-      sh = { 'shfmt' },
-      go = { 'gofmt' },
-    },
-  })
+	-- See also:
+	-- - `:h Conform`
+	-- - `:h conform-options`
+	-- - `:h conform-formatters`
+	require("conform").setup({
+		default_format_opts = {
+			-- Allow formatting from LSP server if no dedicated formatter is available
+			lsp_format = "fallback",
+		},
+		format_on_save = {
+			-- These options will be passed to conform.format()
+			timeout_ms = 500,
+			lsp_format = "fallback",
+		},
+		-- Map of filetype to formatters
+		-- Make sure that necessary CLI tool is available
+		formatters_by_ft = {
+			lua = { "stylua" },
+			sh = { "shfmt" },
+			go = { "gofmt" },
+		},
+	})
 end)
 
 -- Snippets ===================================================================
@@ -142,81 +155,85 @@ end)
 -- snippet files. They are organized in 'snippets/' directory (mostly) per language.
 -- 'mini.snippets' is designed to work with it as seamlessly as possible.
 -- See `:h MiniSnippets.gen_loader.from_lang()`.
-later(function() add('rafamadriz/friendly-snippets') end)
+later(function()
+	add("rafamadriz/friendly-snippets")
+end)
 
 -- Vim-Tmux Navigator =========================================================
 -- Override mini.basics C-hjkl window mappings for tmux integration
 now(function()
-  add('christoomey/vim-tmux-navigator')
-  -- Override mini.basics window mappings for tmux integration
-  vim.keymap.del('n', '<C-h>')
-  vim.keymap.del('n', '<C-j>')
-  vim.keymap.del('n', '<C-k>')
-  vim.keymap.del('n', '<C-l>')
-  vim.keymap.set('n', '<C-h>', '<Cmd>TmuxNavigateLeft<CR>', { desc = 'Navigate left' })
-  vim.keymap.set('n', '<C-j>', '<Cmd>TmuxNavigateDown<CR>', { desc = 'Navigate down' })
-  vim.keymap.set('n', '<C-k>', '<Cmd>TmuxNavigateUp<CR>', { desc = 'Navigate up' })
-  vim.keymap.set('n', '<C-l>', '<Cmd>TmuxNavigateRight<CR>', { desc = 'Navigate right' })
-  vim.keymap.set('n', '<C-\\>', '<Cmd>TmuxNavigatePrevious<CR>', { desc = 'Navigate previous' })
+	add("christoomey/vim-tmux-navigator")
+	-- Override mini.basics window mappings for tmux integration
+	vim.keymap.del("n", "<C-h>")
+	vim.keymap.del("n", "<C-j>")
+	vim.keymap.del("n", "<C-k>")
+	vim.keymap.del("n", "<C-l>")
+	vim.keymap.set("n", "<C-h>", "<Cmd>TmuxNavigateLeft<CR>", { desc = "Navigate left" })
+	vim.keymap.set("n", "<C-j>", "<Cmd>TmuxNavigateDown<CR>", { desc = "Navigate down" })
+	vim.keymap.set("n", "<C-k>", "<Cmd>TmuxNavigateUp<CR>", { desc = "Navigate up" })
+	vim.keymap.set("n", "<C-l>", "<Cmd>TmuxNavigateRight<CR>", { desc = "Navigate right" })
+	vim.keymap.set("n", "<C-\\>", "<Cmd>TmuxNavigatePrevious<CR>", { desc = "Navigate previous" })
 end)
 
 -- Jujutsu VCS Integration ====================================================
 later(function()
-  add('MunifTanjim/nui.nvim')
-  add({ source = 'esmuellert/codediff.nvim', depends = { 'MunifTanjim/nui.nvim' } })
-  add({ source = 'yannvanhalewyn/jujutsu.nvim', depends = { 'MunifTanjim/nui.nvim' } })
-  local ok, jj = pcall(require, 'jujutsu')
-  if ok then jj.setup({ diff_preset = 'codediff' }) end
+	add("MunifTanjim/nui.nvim")
+	add({ source = "esmuellert/codediff.nvim", depends = { "MunifTanjim/nui.nvim" } })
+	add({ source = "yannvanhalewyn/jujutsu.nvim", depends = { "MunifTanjim/nui.nvim" } })
+	local ok, jj = pcall(require, "jujutsu")
+	if ok then
+		jj.setup({ diff_preset = "codediff" })
+	end
 end)
 
 -- Chezmoi Integration ========================================================
 later(function()
-  -- Syntax highlighting for chezmoi template files
-  add('alker0/chezmoi.vim')
+	-- Syntax highlighting for chezmoi template files
+	add("alker0/chezmoi.vim")
 
-  -- Core chezmoi editing functionality with file watching
-  add('nvim-lua/plenary.nvim')
-  add({ source = 'xvzc/chezmoi.nvim', depends = { 'nvim-lua/plenary.nvim' } })
-  require('chezmoi').setup({
-    edit = {
-      watch = true,
-      force = false,
-    },
-    notification = {
-      on_open = true,
-      on_apply = true,
-    },
-  })
+	-- Core chezmoi editing functionality with file watching
+	add("nvim-lua/plenary.nvim")
+	add({ source = "xvzc/chezmoi.nvim", depends = { "nvim-lua/plenary.nvim" } })
+	require("chezmoi").setup({
+		edit = {
+			watch = true,
+			force = false,
+		},
+		notification = {
+			on_open = true,
+			on_apply = true,
+		},
+	})
 
-  -- Auto-apply chezmoi on save for source files
-  _G.Config.new_autocmd('BufWritePost', nil, function(ev)
-    local path = vim.api.nvim_buf_get_name(ev.buf)
-    if path:match(vim.fn.expand('~/.local/share/chezmoi/')) then
-      vim.schedule(function()
-        require('chezmoi.commands.__edit').watch()
-      end)
-    end
-  end, 'Chezmoi watch on save')
+	-- Auto-apply chezmoi on save for source files
+	_G.Config.new_autocmd("BufWritePost", nil, function(ev)
+		local path = vim.api.nvim_buf_get_name(ev.buf)
+		if path:match(vim.fn.expand("~/.local/share/chezmoi/")) then
+			vim.schedule(function()
+				require("chezmoi.commands.__edit").watch()
+			end)
+		end
+	end, "Chezmoi watch on save")
 end)
 
 -- Mason: Package manager for LSPs, formatters, linters =======================
 now_if_args(function()
-  add('mason-org/mason.nvim')
-  add('mason-org/mason-lspconfig.nvim')
+	add("mason-org/mason.nvim")
+	add("mason-org/mason-lspconfig.nvim")
 
-  require('mason').setup()
+	require("mason").setup()
 
-  -- LSPs to auto-install and enable (single list - no duplication needed)
-  -- mason-lspconfig automatically calls vim.lsp.enable() for installed servers
-  require('mason-lspconfig').setup({
-    ensure_installed = {
-      'harper_ls',
-      'lua_ls',
-      'ts_ls',
-      'gopls',
-      'ruff',
-      'prisma-language-server',
-    },
-    automatic_enable = true, -- Auto-enable installed servers (default)
-  })
+	-- LSPs to auto-install and enable (single list - no duplication needed)
+	-- mason-lspconfig automatically calls vim.lsp.enable() for installed servers
+	require("mason-lspconfig").setup({
+		ensure_installed = {
+			"harper_ls",
+			"lua_ls",
+			"ts_ls",
+			"gopls",
+			"ruff",
+			"prisma-language-server",
+		},
+		automatic_enable = true, -- Auto-enable installed servers (default)
+	})
 end)
