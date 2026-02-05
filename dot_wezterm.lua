@@ -122,6 +122,21 @@ config.keys = {
 	{ key = "r", mods = "LEADER", action = act.ReloadConfiguration },
 }
 
+wezterm.on("format-tab-title", function(tab, _, _, _, _, max_width)
+	local title = tab.tab_title
+	if not title or title == "" then
+		title = tab.active_pane.title
+	end
+
+	local user_vars = tab.active_pane:get_user_vars() or {}
+	local zmx_session = user_vars.ZMX_SESSION
+	if zmx_session and zmx_session ~= "" then
+		title = zmx_session
+	end
+
+	return wezterm.truncate_right(title, max_width)
+end)
+
 -- Status bar (right side showing workspace name)
 wezterm.on("update-right-status", function(window, _)
 	local workspace = wezterm.mux.get_active_workspace()
