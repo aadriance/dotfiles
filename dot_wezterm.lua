@@ -128,10 +128,11 @@ wezterm.on("format-tab-title", function(tab, _, _, _, _, max_width)
 		title = tab.active_pane.title
 	end
 
-	local user_vars = tab.active_pane:get_user_vars() or {}
-	local zmx_session = user_vars.ZMX_SESSION
-	if zmx_session and zmx_session ~= "" then
-		title = zmx_session
+	local ok, user_vars = pcall(function()
+		return tab.active_pane:get_user_vars()
+	end)
+	if ok and user_vars and user_vars.ZMX_SESSION and user_vars.ZMX_SESSION ~= "" then
+		title = user_vars.ZMX_SESSION
 	end
 
 	return wezterm.truncate_right(title, max_width)
