@@ -51,47 +51,11 @@ config.ssh_domains = {
 
 config.leader = { key = "b", mods = "CTRL", timeout_milliseconds = 1000 }
 
--- Let Ctrl-h/j/k/l reach Neovim/tmux, otherwise use WezTerm pane navigation.
-local function should_send_ctrl_to_app(pane)
-	local process = pane:get_foreground_process_name()
-	if not process then
-		return false
-	end
-	local name = process:match("([^/\\]+)$") or process
-	return name == "nvim" or name == "vim" or name == "tmux"
-end
-
-local function smart_pane_nav(direction, key)
-	return wezterm.action_callback(function(window, pane)
-		if should_send_ctrl_to_app(pane) then
-			window:perform_action(act.SendKey({ key = key, mods = "CTRL" }), pane)
-		else
-			window:perform_action(act.ActivatePaneDirection(direction), pane)
-		end
-	end)
-end
-
 config.keys = {
-	{
-		key = "h",
-		mods = "CTRL",
-		action = smart_pane_nav("Left", "h"),
-	},
-	{
-		key = "j",
-		mods = "CTRL",
-		action = smart_pane_nav("Down", "j"),
-	},
-	{
-		key = "k",
-		mods = "CTRL",
-		action = smart_pane_nav("Up", "k"),
-	},
-	{
-		key = "l",
-		mods = "CTRL",
-		action = smart_pane_nav("Right", "l"),
-	},
+	{ key = "h", mods = "LEADER", action = act.ActivatePaneDirection("Left") },
+	{ key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
+	{ key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
+	{ key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
 
 	{
 		key = "t",
