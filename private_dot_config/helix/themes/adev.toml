@@ -1,0 +1,15 @@
+inherits = "catppuccin_mocha"
+
+# Keep Helix transparent in terminals that support window/background opacity.
+# We explicitly clear background colors for UI surfaces that otherwise stay opaque.
+"ui.background" = { bg = "none" }
+"ui.text" = { bg = "none" }
+"ui.window" = { bg = "none" }
+"ui.popup" = { bg = "none" }
+"ui.help" = { bg = "none" }
+"ui.menu" = { bg = "none" }
+"ui.statusline" = { bg = "none" }
+"ui.statusline.inactive" = { bg = "none" }
+"ui.statusline.normal" = { bg = "none" }
+"ui.statusline.insert" = { bg = "none" }
+"ui.statusline.select" = { bg = "none" }

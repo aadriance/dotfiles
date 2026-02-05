@@ -1,0 +1,10 @@
+[[language]]
+name = "templ"
+auto-format = true
+scope = "source.templ"
+file-types = ["templ"]
+roots = ["go.work", "go.mod"]
+comment-token = "//"
+indent = { tab-width = 2, unit = "  " }
+language-servers = [ "templ" ]
+formatter = { command = "templ" , args = ["fmt"] }
