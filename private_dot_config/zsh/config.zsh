@@ -23,7 +23,7 @@
   unsetopt BEEP
 
 # Publish ZMX_SESSION for WezTerm tab naming.
-# We emit both SetUserVar (WezTerm-specific) and OSC 2 title (portable fallback).
+# We emit SetUserVar plus OSC 1/2 titles as a robust fallback.
 function __wezterm_set_user_var() {
   [[ -t 1 ]] || return
 
@@ -44,8 +44,10 @@ function __term_set_title() {
 
   local title="$1"
   if [[ -n "$TMUX" ]]; then
+    printf '\ePtmux;\e\e]1;%s\a\e\\' "$title"
     printf '\ePtmux;\e\e]2;%s\a\e\\' "$title"
   else
+    printf '\e]1;%s\a' "$title"
     printf '\e]2;%s\a' "$title"
   fi
 }
