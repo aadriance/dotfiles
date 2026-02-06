@@ -2,6 +2,7 @@ packages:
   darwin:
     brews:
       - "chezmoi"
+      - "scooter"
       - "bat"
       - "dasel"
       - "deno"

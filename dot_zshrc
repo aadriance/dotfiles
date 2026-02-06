@@ -14,10 +14,19 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
 
-export EDITOR="nvim"
+export EDITOR="hx"
 
 . "$HOME/.cargo/env"
 export PATH="$HOME/.cargo/bin:$PATH"
 
 alias ash="autossh -M 0 -q"
 alias mvim="NVIM_APPNAME=nvim-mini nvim"
+
+function Resume {
+  fg
+  zle push-input
+  BUFFER=""
+  zle accept-line
+}
+zle -N Resume
+bindkey "^Z" Resume
