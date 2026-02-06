@@ -26,3 +26,28 @@ if command -v zmx &> /dev/null; then
   eval "$(zmx completions zsh)"
 fi
 
+# Publish ZMX_SESSION to WezTerm user vars so tab titles can follow session name.
+# Works locally and over SSH. When inside tmux, wrap the OSC sequence for passthrough.
+function __wezterm_set_user_var() {
+  [[ -t 1 ]] || return
+
+  local name="$1"
+  local value="${2-}"
+  local encoded
+  encoded=$(printf '%s' "$value" | base64 | tr -d '\r\n')
+
+  if [[ -n "$TMUX" ]]; then
+    printf '\ePtmux;\e\e]1337;SetUserVar=%s=%s\a\e\\' "$name" "$encoded"
+  else
+    printf '\e]1337;SetUserVar=%s=%s\a' "$name" "$encoded"
+  fi
+}
+
+function __wezterm_sync_zmx_session() {
+  __wezterm_set_user_var "ZMX_SESSION" "${ZMX_SESSION:-}"
+}
+
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd __wezterm_sync_zmx_session
+add-zsh-hook chpwd __wezterm_sync_zmx_session
+__wezterm_sync_zmx_session
