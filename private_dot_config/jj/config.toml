@@ -20,4 +20,14 @@ email = "me@primaryartemis.com"
 'closest_pushable(to)' = 'heads(::to & mutable() & ~description(exact:"") & (~empty() | merges()))'
 
 [aliases]
-tug = ['bookmark', 'move', '--from', 'heads(::@ & bookmarks())', '--to', 'closest_pushable(@)']
+tug = [
+  'bookmark',
+  'move',
+  '--from',
+  'heads(::@ & bookmarks())',
+  '--to',
+  'closest_pushable(@)',
+]
+
+[ui]
+diff-editor = ["nvim", "-c", "DiffEditor $left $right $output"]

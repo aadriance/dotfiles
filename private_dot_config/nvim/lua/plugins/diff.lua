@@ -10,4 +10,11 @@ return {
       diff_preset = "codediff",
     },
   },
+  {
+    "julienvincent/hunk.nvim",
+    cmd = { "DiffEditor" },
+    config = function()
+      require("hunk").setup()
+    end,
+  },
 }
