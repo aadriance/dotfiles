@@ -1,6 +1,5 @@
 format = """
-$username\
-$hostname\
+${custom.zmx_session}${custom.hostname_fallback}\
 $localip\
 $shlvl\
 $singularity\
@@ -34,7 +33,20 @@ $netns\
 $shell\
 $character"""
 
-# custom module for jj status
+[hostname]
+disabled = true
+
+[custom.zmx_session]
+when = 'test -n "$ZMX_SESSION"'
+command = 'echo "$ZMX_SESSION"'
+description = "Show ZMX_SESSION instead of hostname when present"
+
+[custom.hostname_fallback]
+when = 'test -z "$ZMX_SESSION"'
+command = "starship module hostname"
+style = ""
+description = "Show hostname when ZMX_SESSION is not set"
+
 [custom.jj]
 description = "The current jj status"
 when = "jj --ignore-working-copy root"
