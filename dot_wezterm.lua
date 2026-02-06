@@ -135,13 +135,7 @@ wezterm.on("format-tab-title", function(tab, _, _, _, _, max_width)
 		title = user_vars.ZMX_SESSION
 	end
 
-	if not title or title == "" then
-		title = "shell"
-	end
-
-	local prefix = tostring(tab.tab_index + 1) .. ":"
-	local full = prefix .. title
-	return wezterm.truncate_right(full, max_width)
+	return wezterm.truncate_right(title, max_width)
 end)
 
 -- Status bar (right side showing workspace name)
