@@ -24,17 +24,17 @@ alias mvim="NVIM_APPNAME=nvim-mini nvim"
 alias zl="zmx list"
 function za() { zmx attach "$(hostname | cut -d. -f1).$1"; }
 
-function set_win_title(){
-    local title
-    if ((${+ZMX_SESSION})); then
-        title=$(basename "$ZMX_SESSION")
-    else
-        title=$(basename ${PWD/#$HOME/~})
-    fi
-    echo -ne "\033]0;${title}\007"
-    wezterm cli set-tab-title "$title"
-}
-precmd_functions+=(set_win_title)
+# function set_win_title(){
+#     local title
+#     if ((${+ZMX_SESSION})); then
+#         title=$(basename "$ZMX_SESSION")
+#     else
+#         title=$(basename ${PWD/#$HOME/~})
+#     fi
+#     echo -ne "\033]0;${title}\007"
+#     wezterm cli set-tab-title "$title"
+# }
+# precmd_functions+=(set_win_title)
 
 function Resume {
   fg
