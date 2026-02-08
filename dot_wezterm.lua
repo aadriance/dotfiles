@@ -49,7 +49,7 @@ config.ssh_domains = {
 	},
 }
 
-config.leader = { key = "b", mods = "CTRL", timeout_milliseconds = 1000 }
+config.leader = { key = "w", mods = "CTRL", timeout_milliseconds = 1000 }
 
 config.keys = {
 	{ key = "h", mods = "LEADER", action = act.ActivatePaneDirection("Left") },
