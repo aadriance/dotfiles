@@ -29,3 +29,5 @@ function Resume {
 }
 zle -N Resume
 bindkey "^Z" Resume
+
+nu

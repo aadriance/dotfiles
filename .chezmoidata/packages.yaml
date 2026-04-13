@@ -41,6 +41,9 @@ packages:
       - "zoxide"
       - "vscode-langservers-extracted"
       - "autossh"
+      - "zellij"
+      - "nushell"
+      - "atuin"
     casks:
       - "hammerspoon"
       - "google-chrome"
@@ -49,3 +52,4 @@ packages:
       - "font-victor-mono"
       - "ghostty"
       - "font-zed-mono-nerd-font"
+      - "font-fantasque-sans-mono-nerd-font"
