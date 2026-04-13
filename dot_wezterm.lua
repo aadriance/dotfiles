@@ -9,9 +9,10 @@ end
 
 config.font = wezterm.font("ZedMono Nerd Font Mono")
 config.font_size = 14.0
-config.color_scheme = "Catppuccin Mocha"
-config.window_background_opacity = 0.9
-config.macos_window_background_blur = 20
+-- config.color_scheme = "Catppuccin Mocha"
+config.color_scheme = "terafox"
+-- config.window_background_opacity = 0.9
+-- config.macos_window_background_blur = 20
 config.native_macos_fullscreen_mode = false
 config.window_decorations = "RESIZE"
 config.window_padding = {
@@ -21,8 +22,8 @@ config.window_padding = {
 	bottom = 8,
 }
 
-config.use_fancy_tab_bar = false
-config.tab_bar_at_bottom = true
+-- config.use_fancy_tab_bar = false
+-- config.tab_bar_at_bottom = true
 config.hide_tab_bar_if_only_one_tab = false
 config.show_new_tab_button_in_tab_bar = false
 
